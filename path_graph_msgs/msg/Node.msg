@@ -2,6 +2,6 @@ string nodeid
 Position position
 string type     
 string kind     
-int8 heading    
+int16 heading    
 string direction
 DetectionRange[] rangelist
