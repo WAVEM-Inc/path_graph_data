@@ -1,0 +1,6 @@
+Position position
+string start_node
+string end_node
+---
+string map_id
+Path path
