@@ -1,29 +1,42 @@
-# debug용
+from rclpy.node import Node
 from ..config.path_config import PathConfig
 from ..entity.pathSet import PathSet
 from ..repository.map_load import MapLoad
 from ..common import geo
 
-# from ..entity.path import Path
-
-# from config.path_config import PathConfig
-# from entity.pathSet import PathSet
-# from repository.map_load import MapLoad
-# from entity.path import Path
-# from common import geo
-
-import logging
-
-logger = logging.getLogger()
-
 
 class PathController:
+    """
+    Class that searches for a path matching a request
 
-    def __init__(self):
+    Attributes:
+        logger: Object for logging, ROS node class.
+
+    """
+
+    def __init__(self, node: Node):
         super().__init__()
+        self.logger = node
 
     def get_task_path(self, startPos, startNode, endNode):
+        """Find a route that matches the origin and destination..
 
+        1) Extract route information suitable for the requested task from among the vehicle driving routes created in the route editor.
+        2) Returns the saved map ID and version.
+
+        Args:
+            startPos: origin node.(longitude/latitude coordinates)
+            startNode : origin node.(node id)
+            endNode: destination node(node id)
+
+        Returns:
+            pathObj : path object ( Class Path )
+            mapId : map id
+            version : map version
+
+        Raises:
+
+        """
         try:
             # 파일에서 조회한 경로 정보 에서 start,end가 매핑되는 경로를 찾는다.
             data = MapLoad.load_path_file()
@@ -37,7 +50,7 @@ class PathController:
             )
 
             if len(templist) == 0:
-                logger.error(
+                self.logger.get_logger().error(  # logger.error()
                     "No matching route information was found. node number : " + endNode
                 )
                 return None, None, None
@@ -45,7 +58,7 @@ class PathController:
             # 2. startPos 검색결과 path 리스트의 nodelist에서  매칭되는 path를 찾는다.
             pathObj = self.find_maching_node(startPos, templist)
             if pathObj is None:
-                logger.error(
+                self.logger.get_logger().error(  # logger.error(
                     (
                         "No matching route information was found. node position : "
                         + str(startPos.latitude)
@@ -56,7 +69,7 @@ class PathController:
                 return None, None, None
 
         except Exception as e:
-            logger.error(
+            self.logger.get_logger().error(  # logger.error(
                 ("Exception occurred while code execution(get_task_path): " + str(e))
             )
             return None, None, None
@@ -64,7 +77,7 @@ class PathController:
         return pathObj, mapId, version
 
     def find_maching_node(self, pos, pathlist):
-        """Find the path whose coordinates are in the node list.
+        """Finds the path with coordinates among the nodes in the path.
 
         Finds and returns a route that matches the current location of the vehicle in the route list..
 
@@ -97,7 +110,7 @@ class PathController:
             )
             pathId = pathObj.id
             if len(ret) == 0:
-                logger.info(
+                self.node.get_logger().error(  # logger.info(
                     ("A point matching the vehicle's coordinates could not be found.")
                 )
                 return None

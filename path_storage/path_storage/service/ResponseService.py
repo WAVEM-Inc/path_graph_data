@@ -1,4 +1,4 @@
-# debug용
+from rclpy.node import Node as Logback
 from ..entity.path import Path
 from ..entity.graphSet import GraphSet
 from ..entity.graph_list import GraphList
@@ -11,27 +11,37 @@ from path_graph_msgs.msg import Node
 from path_graph_msgs.msg import Position
 from path_graph_msgs.msg import DetectionRange
 
-# from entity.path import Path
-# from entity.graphSet import GraphSet
-# from entity.graph.graph_list import GraphList
-# from entity.graph.graph import Graph
-# from entity.graph.node import GraphNode
-# from entity.graph.edge import GraphEdge
-
-import logging
-
-logger = logging.getLogger()
-
 
 class ResponseService:
-    def __init__(self):
+    """
+    Class for generating service response information
+
+    Attributes:
+        logger: Object for logging, ROS node class.
+
+    """
+
+    def __init__(self, logback: Logback):
         super().__init__()
+        self.logger = logback
 
     def convertResponse(self, data: Path, response):
+        """
+        Converts route information into service response format.
 
+        Args:
+            data : route information.
+            response : service response
+
+        Returns:
+            response : Service response information with route information
+
+        Raises:
+
+        """
         response.path.id = data.id
         response.path.name = data.name
-        # response.path.nodelist = data.nodeList
+
         try:
             nodelist = []
             rangelist = []
@@ -63,15 +73,30 @@ class ResponseService:
                         rangelist=rangelist,
                     )
                 )
-        except Exception as e:
-            logger.error(("Exception occurred while code execution: " + str(e)))
-            return None
 
-        response.path.nodelist = nodelist
+            response.path.nodelist = nodelist
+
+        except Exception as e:
+            self.logger.get_logger().error(
+                ("Exception occurred while code execution(convertResponse): " + str(e))
+            )
+            response = None
         return response
 
     def makeGraphJson(self, send_id, data: GraphSet):
+        """
+        Convert graph information to JSON string format.
 
+        Args:
+            send_id : Elements of response data
+            data : graph data
+
+        Returns:
+            response : Service response information with route information
+
+        Raises:
+
+        """
         nodelist = []
         edgelist = []
         try:
@@ -115,7 +140,9 @@ class ResponseService:
             rbt_graph_list = GraphList(send_id=send_id, graph=graphlist)
 
         except Exception as e:
-            logger.error(("Exception occurred while code execution: " + str(e)))
+            self.logger.get_logger().error(
+                ("Exception occurred while code execution: " + str(e))
+            )
             return None
 
         return rbt_graph_list.model_dump_json()

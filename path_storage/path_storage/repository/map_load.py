@@ -1,38 +1,42 @@
 import json
-import logging
-import os
-
-# debug용
 from ..config.path_config import PathConfig
-
-# from config.path_config import PathConfig
-
-logger = logging.getLogger()
 
 
 class MapLoad:
+    """
+    Class to read path information file
+
+    Attributes:
+
+    """
 
     def __init__(self):
         super().__init__("MapLoad")
 
     def load_path_file(filename=""):
+        """
+        Reads the file and returns it in json format.
 
-        try:
-            home_path = os.path.expanduser("~")
-            conf = PathConfig()
-            filepath = home_path + conf.config["CONFIG"]["file_path"] + "/"
+        Args:
+            filename : File name to read. If not, use the file name in the configuration file.
 
-            if filename == "":
-                filename = conf.config["CONFIG"]["file_name"]
+        Returns:
+            path_json : json format data of the contents of the file
 
-            # 경로 맵 파일
-            fullpath = filepath + filename
+        Raises:
 
-            with open(fullpath, "r") as f:
-                path_json = json.load(f)
+        """
+        conf = PathConfig()
+        filepath = conf.home_path + conf.config["CONFIG"]["file_path"]
 
-        except Exception as e:
-            logger.error(("Exception occurred while code execution: " + str(e)))
+        if filename == "":
+            filename = conf.config["CONFIG"]["file_name"]
+
+        # 경로 맵 파일
+        fullpath = filepath + "/" + filename
+
+        with open(fullpath, "r") as f:
+            path_json = json.load(f)
 
         return path_json
 

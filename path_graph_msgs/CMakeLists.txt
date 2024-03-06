@@ -11,13 +11,13 @@ find_package(ament_cmake REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
- rosidl_generate_interfaces(${PROJECT_NAME}  
-    "msg/Position.msg"
-    "msg/Node.msg"    
-    "msg/DetectionRange.msg"
-    "msg/Path.msg"
+find_package(route_msgs REQUIRED)
+
+rosidl_generate_interfaces(${PROJECT_NAME}  
+
     "srv/Path.srv"
     "srv/Graph.srv"
+    DEPENDENCIES route_msgs
   )
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

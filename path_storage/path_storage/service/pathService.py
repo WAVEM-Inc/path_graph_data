@@ -6,29 +6,54 @@ from .ResponseService import ResponseService as rspCtrl
 
 from path_graph_msgs.srv import Path
 from path_graph_msgs.srv import Graph
+from ..config.path_config import PathConfig
 
 
 class PathService(Node):
+    """
+    ROS node class for managing route information
+
+    Attributes:
+        srv_path: Service Server for path information service
+        srv_graph: Service Server for graph information service
+
+    """
 
     def __init__(self):
         super().__init__("PathService")
-        self.get_logger().info("start PathService")
-        self.srv = self.create_service(
-            Path, "path_graph_msgs/path", self.get_path_callback
-        )
-        self.srv = self.create_service(
-            Graph, "path_graph_msgs/graph", self.get_graph_callback
+
+        self.get_logger().info("Start storage path data management service")
+
+        conf = PathConfig()
+        path_topic = conf.config["CONFIG"]["path_topic"]
+        self.srv_path = self.create_service(Path, path_topic, self.get_path_callback)
+
+        graph_topic = conf.config["CONFIG"]["graph_topic"]
+        self.srv_graph = self.create_service(
+            Graph, graph_topic, self.get_graph_callback
         )
 
     def get_path_callback(self, request, response):
+        """
+        Callback function for route information service request
 
+        Args:
+            request : service request
+            response : service response
+
+        Returns:
+            response
+
+        Raises:
+
+        """
         self.get_logger().info(
             "Incoming request latitude: %s longitude: %s end_node: %s "
             % (request.position.latitude, request.position.longitude, request.end_node)
         )
 
         try:
-            data, mapId, version = pathCtrl.PathController().get_task_path(
+            data, mapId, version = pathCtrl.PathController(self).get_task_path(
                 request.position, request.start_node, request.end_node
             )
 
@@ -45,7 +70,7 @@ class PathService(Node):
                 + str(len(data.nodeList))
             )
 
-            data = rspCtrl().convertResponse(data, response)
+            data = rspCtrl(self).convertResponse(data, response)
 
             if data is None:
                 return response
@@ -57,8 +82,8 @@ class PathService(Node):
                 + response.path.id
                 + ", name : "
                 + response.path.name
-                + ", len : "
-                + str(len(response.path.nodelist))
+                # + ", len : "
+                # + str(len(response.path.nodelist))
             )
 
         except Exception as e:
@@ -72,6 +97,19 @@ class PathService(Node):
         return response
 
     def get_graph_callback(self, request, response):
+        """
+        Callback function for graph(map) information service request
+
+        Args:
+            request : service request
+            response : service response
+
+        Returns:
+            response
+
+        Raises:
+
+        """
         self.get_logger().info("Incoming request\nsend_id: %s" % (request.send_id))
         try:
             data = graphCtrl.GraphController().get_graph()
