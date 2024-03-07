@@ -14,6 +14,7 @@ def generate_launch_description():
         name=executable_name,
         output="screen",
         parameters=[],
+        arguments=["--ros-args", "--log-level", "info"],
     )
     # create and return launch description object
     return LaunchDescription(

@@ -7,9 +7,9 @@ from ..entity.graph_edge import GraphEdge
 from ..entity.graph import Graph
 
 
-from path_graph_msgs.msg import Node
-from path_graph_msgs.msg import Position
-from path_graph_msgs.msg import DetectionRange
+from route_msgs.msg import Node
+from route_msgs.msg import Position
+from route_msgs.msg import DetectionRange
 
 
 class ResponseService:
@@ -97,6 +97,7 @@ class ResponseService:
         Raises:
 
         """
+        self.logger.get_logger().info(("makeGraphJson : " + send_id))
         nodelist = []
         edgelist = []
         try:

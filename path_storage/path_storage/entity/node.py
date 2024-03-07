@@ -10,6 +10,6 @@ class Node(BaseModel):
     position: Position
     type: Optional[str] = None
     kind: Optional[str] = None
-    heading: Optional[int] = None
+    heading: Optional[float] = None
     direction: Optional[str] = None
     detectionRange: Optional[List[DetectionRange]] = None

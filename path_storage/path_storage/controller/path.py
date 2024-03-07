@@ -110,8 +110,10 @@ class PathController:
             )
             pathId = pathObj.id
             if len(ret) == 0:
-                self.node.get_logger().error(  # logger.info(
-                    ("A point matching the vehicle's coordinates could not be found.")
+                self.logger.get_logger().error(
+                    (
+                        "A point on the route that matches the vehicle's coordinates could not be found."
+                    )
                 )
                 return None
 

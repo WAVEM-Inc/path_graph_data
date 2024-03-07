@@ -1,5 +1,4 @@
 from rclpy.node import Node
-
 from ..controller import path as pathCtrl
 from ..controller import graph as graphCtrl
 from .ResponseService import ResponseService as rspCtrl
@@ -82,8 +81,8 @@ class PathService(Node):
                 + response.path.id
                 + ", name : "
                 + response.path.name
-                # + ", len : "
-                # + str(len(response.path.nodelist))
+                # + "\n"
+                # + json.dumps(response.path.nodelist)
             )
 
         except Exception as e:
@@ -110,13 +109,13 @@ class PathService(Node):
         Raises:
 
         """
-        self.get_logger().info("Incoming request\nsend_id: %s" % (request.send_id))
+        self.get_logger().info("Incoming request send_id: %s" % (request.send_id))
         try:
             data = graphCtrl.GraphController().get_graph()
             if data is None:
                 return response
 
-            jsonStr = rspCtrl().makeGraphJson(request.send_id, data)
+            jsonStr = rspCtrl(self).makeGraphJson(request.send_id, data)
 
             response.graph_list = jsonStr
 
