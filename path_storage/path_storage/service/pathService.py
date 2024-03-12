@@ -47,8 +47,13 @@ class PathService(Node):
 
         """
         self.get_logger().info(
-            "Incoming request latitude: %s longitude: %s end_node: %s "
-            % (request.position.latitude, request.position.longitude, request.end_node)
+            "Incoming request latitude: %s longitude: %s start_node: %s end_node: %s "
+            % (
+                request.position.latitude,
+                request.position.longitude,
+                request.start_node,
+                request.end_node,
+            )
         )
 
         try:
