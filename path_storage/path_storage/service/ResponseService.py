@@ -5,7 +5,7 @@ from ..entity.graph_list import GraphList
 from ..entity.graph_node import GraphNode
 from ..entity.graph_edge import GraphEdge
 from ..entity.graph import Graph
-
+from ..config.path_config import PathConfig
 
 from route_msgs.msg import Node
 from route_msgs.msg import Position
@@ -43,10 +43,13 @@ class ResponseService:
         response.path.name = data.name
 
         try:
+            conf = PathConfig()
+            nodeCode = conf.config["DEFINE"]["waitng_node"]
+
             nodelist = []
-            rangelist = []
             for node in data.nodeList:
-                if node.kind == "waiting":
+                rangelist = []
+                if node.kind == nodeCode:
                     for range in node.detectionRange:
                         rangelist.append(
                             DetectionRange(
@@ -59,21 +62,37 @@ class ResponseService:
                                 code=range.actionCode,
                             )
                         )
-                nodelist.append(
-                    Node(
-                        nodeid=node.nodeId,
-                        position=Position(
-                            latitude=node.position.latitude,
-                            longitude=node.position.longitude,
-                        ),
-                        type=node.type,
-                        kind=node.kind,
-                        heading=node.heading,
-                        direction=node.direction,
-                        rangelist=rangelist,
+                if rangelist:
+                    self.logger.get_logger().info("rangelist" + str(rangelist))
+                    nodelist.append(
+                        Node(
+                            nodeid=node.nodeId,
+                            position=Position(
+                                latitude=node.position.latitude,
+                                longitude=node.position.longitude,
+                            ),
+                            type=node.type,
+                            kind=node.kind,
+                            heading=node.heading,
+                            direction=node.direction,
+                            rangelist=rangelist,
+                        )
                     )
-                )
-
+                else:
+                    self.logger.get_logger().info("rangelist None")
+                    nodelist.append(
+                        Node(
+                            nodeid=node.nodeId,
+                            position=Position(
+                                latitude=node.position.latitude,
+                                longitude=node.position.longitude,
+                            ),
+                            type=node.type,
+                            kind=node.kind,
+                            heading=node.heading,
+                            direction=node.direction,
+                        )
+                    )
             response.path.nodelist = nodelist
 
         except Exception as e:
@@ -101,23 +120,35 @@ class ResponseService:
         nodelist = []
         edgelist = []
         try:
-            if data.node is not None:
+            if data.node:
                 nodelist = list(
                     map(
-                        lambda m: GraphNode(
-                            node_id=m.nodeId,
-                            node_name=m.nodeId,
-                            x=m.position.longitude,
-                            y=m.position.latitude,
-                            node_type=m.type,
-                            heading=0,
-                            critical=False,
+                        lambda m: (
+                            GraphNode(
+                                node_id=m.nodeId,
+                                node_name=m.nodeName,
+                                x=m.position.longitude,
+                                y=m.position.latitude,
+                                node_type=m.type,
+                                heading=m.heading,
+                                critical=False,
+                            )
+                            if m.nodeName
+                            else GraphNode(
+                                node_id=m.nodeId,
+                                node_name=m.nodeId,
+                                x=m.position.longitude,
+                                y=m.position.latitude,
+                                node_type=m.type,
+                                heading=m.heading,
+                                critical=False,
+                            )
                         ),
                         data.node,
                     )
                 )
 
-            if data.link is not None:
+            if data.link:
                 edgelist = list(
                     map(
                         lambda m: GraphEdge(

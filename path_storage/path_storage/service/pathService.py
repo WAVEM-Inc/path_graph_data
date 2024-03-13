@@ -71,7 +71,7 @@ class PathService(Node):
                 + ", name : "
                 + data.name
                 + ", len : "
-                + str(len(data.nodeList))
+                + str(data.nodeList)
             )
 
             data = rspCtrl(self).convertResponse(data, response)
