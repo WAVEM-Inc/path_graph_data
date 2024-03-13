@@ -63,7 +63,6 @@ class ResponseService:
                             )
                         )
                 if rangelist:
-                    self.logger.get_logger().info("rangelist" + str(rangelist))
                     nodelist.append(
                         Node(
                             nodeid=node.nodeId,
@@ -79,7 +78,6 @@ class ResponseService:
                         )
                     )
                 else:
-                    self.logger.get_logger().info("rangelist None")
                     nodelist.append(
                         Node(
                             nodeid=node.nodeId,

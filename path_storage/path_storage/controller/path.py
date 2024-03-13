@@ -354,14 +354,10 @@ class PathController:
         try:
             conf = PathConfig()
             nodeCode = conf.config["DEFINE"]["workplace_node"]
-            self.logger.get_logger().info("workplace_node : " + str(type(nodeCode)))
 
             data = MapLoad.load_path_file()
             graph_info = GraphSet(**data)  # path,node,link
 
-            self.logger.get_logger().info(
-                "graph_info.node : " + str(type(graph_info.node[0].type))
-            )
             # 경로 정보 에서 노드 헤딩 값을 찾아서 넣는다.
             nlist = list(filter(lambda nd: nd.type == nodeCode, graph_info.node))
             if nlist:

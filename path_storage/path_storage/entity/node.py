@@ -7,6 +7,7 @@ from .position import Position
 
 class Node(BaseModel):
     nodeId: str
+    nodeName: str = None
     position: Position
     type: Optional[str] = None
     kind: Optional[str] = None
