@@ -69,7 +69,21 @@ path_graph_msgs/srv/Graph
 path_graph_msgs/srv/Path
 
 *   차량의 위치 및 목적지 노드에 맞는 경로를 조회 하여 리턴한다.      
+
+*   Service Field Notes
     
+    route_msgs/Position position  
+    string start_node  
+    string end_node  
+
+
+주행경로 서비스 요청시 필드(출발지 좌표,출발지 아이디,도착지 아이디)의 optional에 따른 출발/도착 경로 조회 결과는 다음과 같다.
+*priority_gps 는 config.ini의 환경변수 이다.
+
+![image](https://github.com/WAVEM-Inc/path_graph_data/assets/87844157/964cf39f-5caf-4250-b761-8dc957634196)
+
+
+
 ## License
 
 
