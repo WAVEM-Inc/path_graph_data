@@ -53,10 +53,11 @@ class ResponseService:
                     for range in node.detectionRange:
                         rangelist.append(
                             DetectionRange(
-                                position=Position(
-                                    latitude=range.position.latitude,
-                                    longitude=range.position.longitude,
-                                ),
+                                offset=range.offset,
+                                # position=Position(
+                                #     latitude=range.position.latitude,
+                                #     longitude=range.position.longitude,
+                                # ),
                                 width=range.width,
                                 height=range.height,
                                 code=range.actionCode,
@@ -74,6 +75,7 @@ class ResponseService:
                             kind=node.kind,
                             heading=node.heading,
                             direction=node.direction,
+                            driving_option=node.drivingOption,
                             rangelist=rangelist,
                         )
                     )
@@ -89,6 +91,7 @@ class ResponseService:
                             kind=node.kind,
                             heading=node.heading,
                             direction=node.direction,
+                            driving_option=node.drivingOption,
                         )
                     )
             response.path.nodelist = nodelist
