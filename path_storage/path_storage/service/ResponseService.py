@@ -3,7 +3,6 @@ from ..entity.path import Path
 from ..entity.graphSet import GraphSet
 from ..entity.graph_list import GraphList
 from ..entity.graph_node import GraphNode
-from ..entity.graph_edge import GraphEdge
 from ..entity.graph import Graph
 from ..config.path_config import PathConfig
 
@@ -119,7 +118,7 @@ class ResponseService:
         """
         self.logger.get_logger().info(("makeGraphJson : " + send_id))
         nodelist = []
-        edgelist = []
+
         try:
             if data.node:
                 nodelist = list(
@@ -149,16 +148,6 @@ class ResponseService:
                     )
                 )
 
-            if data.link:
-                edgelist = list(
-                    map(
-                        lambda m: GraphEdge(
-                            source=m.stNode, target=m.edNode, directional=True
-                        ),
-                        data.link,
-                    )
-                )
-
             graphlist = []
             graphlist.append(
                 Graph(
@@ -166,7 +155,6 @@ class ResponseService:
                     version=data.version,
                     is_indoor=False,
                     node_list=nodelist,
-                    edge_list=edgelist,
                 )
             )
 

@@ -14,4 +14,3 @@ class Graph(BaseModel):
     version: str
     is_indoor: bool
     node_list: List[GraphNode]
-    edge_list: List[GraphEdge] = None
