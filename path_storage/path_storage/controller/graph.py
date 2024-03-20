@@ -30,7 +30,6 @@ class GraphController:
         data = MapLoad.load_path_file()
         graph_info = GraphSet(**data)  # path,node,link
         path_info = PathSet(**data)  # path,node,link
-        # print(graph_info.dict())
 
         workNodeCode = "work_node"
         tempNodeCode = "workplace_node"
@@ -51,7 +50,7 @@ class GraphController:
         # 코드값 변환(out 파일의 코드와 내부 사용 코드 값이 다른 경우 변환을 위해 필요함)
         convertValue = {}
         convertValue[tempNodeCode] = initNodeCode
-        print(graph_info.node)
+
         # 작업장,대기장소만 필터
         graphNodeList = list(
             filter(
@@ -60,8 +59,6 @@ class GraphController:
             )
         )
 
-        print("node type : " + workNodeCode + " / " + tempNodeCode)
-        print(graphNodeList)
         # workplace_node를 initial_node로 변환
         graphNodeList = list(
             map(lambda x: self._map_node_conversion(x, convertValue), graphNodeList)
@@ -85,7 +82,7 @@ class GraphController:
             nodelist : path information
 
         Returns:
-            node : Node with input direction
+            node : Nodes with added direction information
 
         Raises:
 
@@ -100,21 +97,17 @@ class GraphController:
         return node
 
     def _map_node_conversion(self, node, convertValue: dict):
-        """Conversion value.
+        """Change the value of the node with dictionary data.
 
         Args:
             node : graph node
 
         Returns:
-            node : Node
+            node : changed node
 
         Raises:
 
         """
-        print("_map_node_conversion")
-        print(str(node))
-        print(str(convertValue))
-
         if convertValue.get(node.type) is not None:
             node.type = convertValue[node.type]
 

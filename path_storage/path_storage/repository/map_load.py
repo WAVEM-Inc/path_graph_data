@@ -27,17 +27,21 @@ class MapLoad:
         Raises:
 
         """
-        conf = PathConfig()
-        filepath = conf.home_path + conf.config["CONFIG"]["file_path"]
+        try:
+            conf = PathConfig()
+            filepath = conf.home_path + conf.config["CONFIG"]["file_path"]
 
-        if filename == "":
-            filename = conf.config["CONFIG"]["file_name"]
+            if filename == "":
+                filename = conf.config["CONFIG"]["file_name"]
 
-        # 경로 맵 파일
-        fullpath = filepath + "/" + filename
+            # 경로 맵 파일
+            fullpath = filepath + "/" + filename
 
-        with open(fullpath, "r") as f:
-            path_json = json.load(f)
+            with open(fullpath, "r") as f:
+                path_json = json.load(f)
+        except Exception as e:
+            print(str(e))
+            return None
 
         return path_json
 

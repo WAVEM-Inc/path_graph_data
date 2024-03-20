@@ -116,7 +116,7 @@ class ResponseService:
         Raises:
 
         """
-        self.logger.get_logger().info(("makeGraphJson : " + send_id))
+
         nodelist = []
 
         try:

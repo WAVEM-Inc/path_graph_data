@@ -1,4 +1,7 @@
 from rclpy.node import Node
+from rclpy.qos import QoSProfile
+from std_msgs.msg import String
+
 from ..controller import path as pathCtrl
 from ..controller import graph as graphCtrl
 from .ResponseService import ResponseService as rspCtrl
@@ -23,6 +26,11 @@ class PathService(Node):
 
         self.get_logger().info("Start storage path data management service")
 
+        qos_profile = QoSProfile(depth=10)
+        self.topic_publisher = self.create_publisher(
+            String, "/rms/ktp/data/notify/error", qos_profile
+        )
+
         conf = PathConfig()
         path_topic = conf.config["CONFIG"]["path_topic"]
         self.srv_path = self.create_service(Path, path_topic, self.get_path_callback)
@@ -31,6 +39,9 @@ class PathService(Node):
         self.srv_graph = self.create_service(
             Graph, graph_topic, self.get_graph_callback
         )
+        self.err_code_path = "201"
+        self.err_code_map = "202"
+        self.err_code_pos = "203"
 
     def get_path_callback(self, request, response):
         """
@@ -64,19 +75,22 @@ class PathService(Node):
             if data is None:
                 return response
 
-            self.get_logger().info(
-                "*GET PATH DATA* "
-                + "path id : "
-                + data.id
-                + ", name : "
-                + data.name
-                + ", len : "
-                + str(data.nodeList)
-            )
+            # self.get_logger().info(
+            #     "*GET PATH DATA* "
+            #     + "path id : "
+            #     + data.id
+            #     + ", name : "
+            #     + data.name
+            #     + ", len : "
+            #     + str(data.nodeList)
+            # )
 
             data = rspCtrl(self).convertResponse(data, response)
 
             if data is None:
+                msg = String()
+                msg.data = self.err_code_map
+                self.topic_publisher.publish(msg)
                 return response
 
             response.map_id = mapId
@@ -86,17 +100,17 @@ class PathService(Node):
                 + response.path.id
                 + ", name : "
                 + response.path.name
-                # + "\n"
-                # + json.dumps(response.path.nodelist)
+                + "\n"
+                + str(response.path)
             )
 
         except Exception as e:
             self.get_logger().error(
-                (
-                    "Exception occurred while code execution(get_path_callback): "
-                    + str(e)
-                )
+                "Exception occurred while code execution(get_path_callback): " + str(e)
             )
+            msg = String()
+            msg.data = self.err_code_map
+            self.topic_publisher.publish(msg)
 
         return response
 
