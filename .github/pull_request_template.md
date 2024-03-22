@@ -19,7 +19,7 @@
 
 ## PR Checklist
 
-- [ ] commit message conventions에 맞게 작성했습니다.: https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit 
+- [ ] commit message conventions에 맞게 작성했습니다.
 - [ ] 변경 사항에 대한 테스트를 했습니다.
 - [ ] coding conventions에 맞게 작성했습니다.
 
