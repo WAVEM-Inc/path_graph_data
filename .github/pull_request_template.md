@@ -15,13 +15,13 @@
 - [ ] 테스트 추가, 테스트 리팩토링
 - [ ] 빌드 부분 혹은 패키지 매니저 수정
 - [ ] 파일 혹은 폴더명 수정/삭제
-- [ ] 기카
+- [ ] 기타
 
 ## PR Checklist
 
-- [ ] commit message Conventions에 맞게 작성했습니다.: https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit 
+- [ ] commit message conventions에 맞게 작성했습니다.: https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit 
 - [ ] 변경 사항에 대한 테스트를 했습니다.
-- [ ] Coding Conventions에 맞게 작성했습니다.
+- [ ] coding conventions에 맞게 작성했습니다.
 
 
 ## breaking change?
