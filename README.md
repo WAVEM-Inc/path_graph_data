@@ -21,7 +21,11 @@ KEC 자율주행 차량에서 사용되는 주행 경로 및 관제센터에서 
 - 등록된 서비스에 따라 서비스를 제공하는 서비스 서버이다.  
 
 
+## Config
+환경 파일(config.ini)은 다음 경로에 있어야 한다.
+~/RobotData/maps/kecd_path/config
 
+경로맵 위치 및 파일명은 config.ini에 설정하여 사용한다.
 
 ## Build
 
