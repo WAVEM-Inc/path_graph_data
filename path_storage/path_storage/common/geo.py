@@ -1,4 +1,5 @@
 from numpy import sin, cos, arccos, pi, round
+import math
 
 # from haversine import haversine
 
@@ -32,8 +33,22 @@ def getDistanceBetweenPoints(latitude1, longitude1, latitude2, longitude2, unit=
         )
     )
 
+    if math.isnan(distance):
+        distance = 0.0
+
     if unit == "m":
-        # print("distance : " + str(round(distance * 1000 * 1.609344, 2)))
+        # print(
+        #     "position : "
+        #     + str(latitude1)
+        #     + ","
+        #     + str(longitude1)
+        #     + " : "
+        #     + str(latitude2)
+        #     + ","
+        #     + str(longitude2)
+        #     + " / distance : "
+        #     + str(round(distance * 1000 * 1.609344, 2))
+        # )
         return round(distance * 1000 * 1.609344, 2)
     elif unit == "km":
         return round(distance * 1.609344, 2)

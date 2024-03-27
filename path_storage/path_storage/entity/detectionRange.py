@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class DetectionRange(BaseModel):
     offset: float
-    width: float
+    widthLeft: float
+    widthRight: float
     height: float
     actionCode: str

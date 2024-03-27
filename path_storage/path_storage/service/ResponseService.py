@@ -57,9 +57,10 @@ class ResponseService:
                                 #     latitude=range.position.latitude,
                                 #     longitude=range.position.longitude,
                                 # ),
-                                width=range.width,
+                                width_left=range.widthLeft,
+                                width_right=range.widthRight,
                                 height=range.height,
-                                code=range.actionCode,
+                                action_code=range.actionCode,
                             )
                         )
                 if rangelist:
