@@ -66,7 +66,7 @@ class ResponseService:
                 if rangelist:
                     nodelist.append(
                         Node(
-                            nodeid=node.nodeId,
+                            node_id=node.nodeId,
                             position=Position(
                                 latitude=node.position.latitude,
                                 longitude=node.position.longitude,
@@ -76,13 +76,13 @@ class ResponseService:
                             heading=node.heading,
                             direction=node.direction,
                             driving_option=node.drivingOption,
-                            rangelist=rangelist,
+                            detection_range=rangelist,
                         )
                     )
                 else:
                     nodelist.append(
                         Node(
-                            nodeid=node.nodeId,
+                            node_id=node.nodeId,
                             position=Position(
                                 latitude=node.position.latitude,
                                 longitude=node.position.longitude,
@@ -94,7 +94,7 @@ class ResponseService:
                             driving_option=node.drivingOption,
                         )
                     )
-            response.path.nodelist = nodelist
+            response.path.node_list = nodelist
 
         except Exception as e:
             self.logger.get_logger().error(

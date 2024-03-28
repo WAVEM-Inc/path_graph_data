@@ -64,23 +64,31 @@ class PathController:
             # 1. end node가 없고 start node의 kind가 "endpoint" 인 경우 마지막 노드가 대기장소인 경로를 조회한다.
             # 1.1  경로 리스트에서 시작노드와 일치하는 경로 리스트를 필터링 한다.
             if endNode == "":
+                #  1.2.마지막 노드가 대기장소인 경로를 필터링한다.
+                tempPathList = list(
+                    filter(
+                        lambda pl: self._IsWorkplacePoint(pl.nodeList[-1]),
+                        path_info.path,
+                    )
+                )
+
                 if startNode != "":  # start node id가 있으면
                     tempPathList = self._find_maching_pathlist_byNodeId(  # 1.1.1경로 리스트에서 시작 노드id가 첫번째 노드와 일치 하는 것을 조회
-                        startNode, path_info.path, self.FIRST_NODE
+                        startNode, tempPathList, self.FIRST_NODE
                     )
                 else:  # start node pos가 있으면
                     tempPathList = self._find_maching_pathlist_byLocation(  # 1.1.2경로 리스트에서 시작 좌표가 첫번째 노드와 일치 하는 것을 조회
-                        startPos, path_info.path
+                        startPos, tempPathList
                     )
 
-                if tempPathList:
-                    #  1.2.마지막 노드가 대기장소인 경로를 필터링한다.
-                    tempPathList = list(
-                        filter(
-                            lambda pl: self._IsWorkplacePoint(pl.nodeList[-1]),
-                            tempPathList,
-                        )
-                    )
+                # if tempPathList:
+                #     #  1.2.마지막 노드가 대기장소인 경로를 필터링한다.
+                #     tempPathList = list(
+                #         filter(
+                #             lambda pl: self._IsWorkplacePoint(pl.nodeList[-1]),
+                #             tempPathList,
+                #         )
+                #     )
 
             else:  # 2.end node가 있으면
                 # 2.1.경로 리스트에서 마지막노드와 일치하는 경로 리스트를 필터링 한다.
@@ -162,7 +170,8 @@ class PathController:
     def _find_maching_pathlist_byLocation(self, pos, pathlist):
         """Finds the path with coordinates among the nodes in the path.
 
-        Finds and returns a route that matches the current location of the vehicle in the route list..
+        Finds and returns a path in the route list whose starting node matches the vehicle's current location.
+        Find a path that has the nearest node while remaining within the limit.
 
         Args:
             pos: location of vehicle.
@@ -178,30 +187,53 @@ class PathController:
         limit = PathConfig().config["CONFIG"].getfloat("matching_limit")
         limit = 2.0 if limit is None else limit
 
+        distance_min = 10000
         pathId = None
         for pathObj in pathlist:
-            result = list(
-                filter(
-                    lambda x: geo.getDistanceBetweenPoints(
-                        pos.latitude,
-                        pos.longitude,
-                        x.position.latitude,
-                        x.position.longitude,
-                    )
-                    < limit,
-                    pathObj.nodeList,
+            distance = geo.getDistanceBetweenPoints(
+                pos.latitude,
+                pos.longitude,
+                pathObj.nodeList[0].position.latitude,
+                pathObj.nodeList[0].position.longitude,
+            )
+            if distance < limit and distance < distance_min:
+                pathId = pathObj.id
+                distance_min = distance
+
+            # result = list(
+            #     filter(
+            #         lambda x: geo.getDistanceBetweenPoints(
+            #             pos.latitude,
+            #             pos.longitude,
+            #             x.position.latitude,
+            #             x.position.longitude,
+            #         )
+            #         < limit,
+            #         pathObj.nodeList,
+            #     )
+            # )
+            # pathId = pathObj.id
+            # if not result:
+            #     self.node.get_logger().error(
+            #         (
+            #             "A point on the route that matches the vehicle's coordinates could not be found. : "
+            #             + str(pos)
+            #         )
+            #     )
+            #     return None
+        if pathId is None:
+            self.node.get_logger().error(
+                (
+                    "No node matching the coordinates could be found in the path list: "
+                    + str(pos.latitude)
+                    + "/"
+                    + str(pos.longitude)
                 )
             )
-            pathId = pathObj.id
-            if not result:
-                self.node.get_logger().error(
-                    (
-                        "A point on the route that matches the vehicle's coordinates could not be found. : "
-                        + str(pos)
-                    )
-                )
-                return None
-
+        else:
+            self.node.get_logger().info(
+                ("pathId : " + pathId + ",  min distance : " + str(distance_min))
+            )
         result = list(filter(lambda x: x.id == pathId, pathlist))
 
         return result
