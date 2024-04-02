@@ -1,0 +1,6 @@
+route_msgs/Position position
+string start_node
+string end_node
+---
+string map_id
+route_msgs/Path path

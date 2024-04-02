@@ -1,0 +1,212 @@
+{
+  "mapId":"335",
+  "version":"KEC20240228001T",
+  "path": [
+    {
+      "id": "300101",
+      "name": "ready01",
+      "nodeList": [
+        {
+          "nodeId": "33601003",
+          "position": {
+            "latitude": 37.3923235,
+            "longitude": 126.938187
+          },
+          "type": "path_node",
+          "kind": "connecting",
+          "heading": 90,
+          "direction": "forward"
+        },
+        {
+          "nodeId": "33601004",
+          "position": {
+            "latitude": 37.393235,
+            "longitude": 126.937187
+          },
+          "type": "path_node",
+          "kind": "waiting",
+          "heading": 90,
+          "direction": "forward",
+          "detectionRange": [{
+            "position": {
+              "latitude": 37.403235,
+              "longitude": 126.998187
+            },
+            "width": 60,
+            "height": 6,
+            "actionCode": "waiting"
+          }]
+        },
+        {
+          "nodeId": "33601005",
+          "position": {
+            "latitude": 37.3923235,
+            "longitude": 126.936187
+          },
+          "type": "path_node",
+          "kind": "intersection",
+          "heading": 180,
+          "direction": "forward"
+        },
+        {
+          "nodeId": "33601006",
+          "position": {
+            "latitude": 37.3921235,
+            "longitude": 126.936187
+          },
+          "type": "work_node",
+          "kind": "endpoint",
+          "heading": 0,
+          "direction": "forward"
+        }
+      ]
+    },
+    {
+      "id": "011001",
+      "name": "call01",
+      "nodeList": [
+        {
+          "nodeId": "33601006",
+          "position": {
+            "latitude": 37.3923235,
+            "longitude": 126.938187
+          },
+          "type": "work_node",
+          "kind": "endpoint",
+          "heading": 90,
+          "direction": "forward"
+        },
+        {
+          "nodeId": "33610007",
+          "position": {
+            "latitude": 37.393235,
+            "longitude": 126.937187
+          },
+          "type": "path_node",
+          "kind": "connecting",
+          "heading": 180,
+          "direction": "forward"
+        },
+        {
+          "nodeId": "33601008",
+          "position": {
+            "latitude": 37.393235,
+            "longitude": 126.937187
+          },
+          "type": "path_node",
+          "kind": "waiting",
+          "heading": 90,
+          "direction": "forward",
+          "detectionRange": [{
+            "position": {
+              "latitude": 37.403235,
+              "longitude": 126.998187
+            },
+            "width": 60,
+            "height": 6,
+            "actionCode": "waiting"
+          }]
+        },
+        {
+          "nodeId": "33601009",
+          "position": {
+            "latitude": 37.3923235,
+            "longitude": 126.936187
+          },
+          "type": "path_node",
+          "kind": "intersection",
+          "heading": 180,
+          "direction": "forward"
+        },
+        {
+          "nodeId": "33601099",
+          "position": {
+            "latitude": 37.3921235,
+            "longitude": 126.936187
+          },
+          "type": "work_node",
+          "kind": "endpoint",
+          "heading": 90,
+          "direction": "forward"
+        }
+      ]
+    }
+  ],
+  "node": [
+    {
+      "nodeId": "33601003",
+	  "type": "path_node",
+      "position": {
+        "latitude": 37.3923235,
+        "longitude": 126.938187
+      }
+    },
+    {
+      "nodeId": "33601004",
+	  "type": "path_node",
+      "position": {
+        "latitude": 37.3923235,
+        "longitude": 126.938187
+      }
+    },
+    {
+      "nodeId": "33601005",
+	  "type": "path_node",
+      "position": {
+        "latitude": 37.3923235,
+        "longitude": 126.938187
+      }
+    },
+    {
+      "nodeId": "33601006",
+	  "type": "path_node",
+      "position": {
+        "latitude": 37.3923235,
+        "longitude": 126.938187
+      }
+    },
+    {
+      "nodeId": "33610001",
+	  "type": "path_node",
+      "position": {
+        "latitude": 37.3923235,
+        "longitude": 126.938187
+      }
+    },
+    {
+      "nodeId": "33610098",
+	  "type": "path_node",
+      "position": {
+        "latitude": 37.3923235,
+        "longitude": 126.938187
+      }
+    }
+  ],
+    "link": [
+    {
+      "linkId": "33601101",
+      "stNode": "33601003",
+      "edNode": "33601004"
+    },
+    {
+      "linkId": "33601102",
+      "stNode": "33601004",
+      "edNode": "33601005"
+    },
+    {
+      "linkId": "33601103",
+      "stNode": "33601005",
+      "edNode": "33601006"
+    },
+    {
+      "linkId": "33601201",
+      "stNode": "33601006",
+      "edNode": "33620002"
+    },
+    {
+      "linkId": "33601202",
+      "stNode": "33620002",
+      "edNode": "33620001"
+    }
+  ]
+}
