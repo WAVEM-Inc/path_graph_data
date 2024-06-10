@@ -131,7 +131,7 @@ class ResponseService:
                                 x=m.position.longitude,
                                 y=m.position.latitude,
                                 node_type=m.type,
-                                heading=m.heading if m.heading > 0 else 0,
+                                heading=0,
                                 critical=False,
                             )
                             if m.nodeName
@@ -141,7 +141,7 @@ class ResponseService:
                                 x=m.position.longitude,
                                 y=m.position.latitude,
                                 node_type=m.type,
-                                heading=m.heading if m.heading > 0 else 0,
+                                heading=0,
                                 critical=False,
                             )
                         ),
