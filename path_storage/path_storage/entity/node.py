@@ -14,4 +14,6 @@ class Node(BaseModel):
     heading: Optional[float] = None
     direction: Optional[str] = None
     drivingOption: Optional[str] = None
+    arriveOption: Optional[str] = None
+    speed: Optional[float] = None
     detectionRange: Optional[List[DetectionRange]] = None

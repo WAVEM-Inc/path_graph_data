@@ -44,7 +44,8 @@ class ResponseService:
         try:
             conf = PathConfig()
             nodeCode = conf.config["DEFINE"]["waitng_node"]
-
+            default_Arrive_option = conf.config["DEFINE"]["default_arrive_option"]
+            
             nodelist = []
             for node in data.nodeList:
                 rangelist = []
@@ -76,6 +77,8 @@ class ResponseService:
                             heading=node.heading,
                             direction=node.direction,
                             driving_option=node.drivingOption,
+                            arrive_option=default_Arrive_option if node.arriveOption is None else node.arriveOption,
+                            speed=0.0 if node.speed is None else node.speed,
                             detection_range=rangelist,
                         )
                     )
@@ -92,6 +95,8 @@ class ResponseService:
                             heading=node.heading,
                             direction=node.direction,
                             driving_option=node.drivingOption,
+                            arrive_option=default_Arrive_option if node.arriveOption is None else node.arriveOption,
+                            speed=0.0 if node.speed is None else node.speed,
                         )
                     )
             response.path.node_list = nodelist
